@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Input from '../../components/Inputs/Input';
+import { validateEmail } from '../../utils/helper';
 
-const Login = (setCurrentPage) => {
+
+const Login = ({setCurrentPage}) => {
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
   const [error,setError] = useState(null);
@@ -12,7 +14,31 @@ const Login = (setCurrentPage) => {
   //Handle login form submit
   const handleLogin = async(e) =>{
     e.preventDefault();
-  }
+
+    if(!validateEmail(email)){
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    if(!password){
+      setError("Please enter the password");
+      return;
+    }
+
+    setError("");
+
+    //Login API Call
+    try{
+
+    }catch(error){
+      if(error.response && error.response.data.messasge){
+        setError(error.response.data.messasge);
+      } else{
+        setError("Something went wrong. Please try again!")
+      }
+    }
+  };
+
   return <div className='w-[90vw] md:w-[33vw] p-7 flex flex-col justify-center'>
     <h3 className='text-lg font-semibold text-black'>
       Welcome Back
@@ -47,7 +73,7 @@ const Login = (setCurrentPage) => {
          <p className='text-[13px] text-slate-800 mt-3'>
           Don't have an account?{" "}
            <button
-            className='font-medium text-[#4B164C] underline cursor-pointer'
+            className='font-medium text-[#B13BFF] underline cursor-pointer'
             onClick={()=>{
               setCurrentPage("signup"); 
             }}
