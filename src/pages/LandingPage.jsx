@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 
 import HERO_IMG from "../assets/hero-img.png";
 import { APP_FEATURES } from '../utils/data';
@@ -7,14 +7,24 @@ import {LuSparkles} from 'react-icons/lu'
 import SignUp from './Auth/SignUp';
 import Login from './Auth/Login';
 import Modal from '../components/Modal';
+import { UserContext } from '../context/userContext';
+import ProfileInfoCard from '../components/Cards/ProfileInfoCard';
 
 const LandingPage = () => {
+  const {user} = useContext(UserContext);
   const navigate = useNavigate();
 
   const [openAuthModal, setOpenAuthModal] = useState(false);
   const [currentPage, setCurrentPage] = useState("login");
 
-  const handleCTA = () => {};
+  const handleCTA = () => {
+    if(!user){
+      setOpenAuthModal(true);
+    }
+    else{
+      navigate("/dashboard");
+    }
+  };
 
   return (
     <>
@@ -28,9 +38,13 @@ const LandingPage = () => {
           <div className='text-5xl text-[#4B164C] font-bold'>
             PrepMate
           </div>
+          {user ? (
+            <ProfileInfoCard />
+          ) : (
           <button className='bg-black text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-[#4B164C] hover:text-grey border border-white transition-colors cursor-pointer' onClick={() => setOpenAuthModal(true)} > 
             Login / Sign Up
           </button>
+          )}
          </header>
 
          {/* Hero Content */}

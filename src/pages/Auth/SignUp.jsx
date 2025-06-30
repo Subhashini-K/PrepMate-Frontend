@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Input from "../../components/Inputs/Input";
 import ProfilePhotoSelector from "../../components/Inputs/ProfilePhotoSelector";
 import { validateEmail } from "../../utils/helper";
+import { UserContext } from '../../context/userContext';
 
 const SignUp = ({ setCurrentPage }) => {
   const [profilePic, setProfilePic] = useState(null);
@@ -11,6 +12,7 @@ const SignUp = ({ setCurrentPage }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
+  const {updateUser} = useContext(UserContext);
   const navigate = useNavigate();
 
   // Handle SignUp Form Submit
