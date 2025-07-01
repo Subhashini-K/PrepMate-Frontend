@@ -22,7 +22,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/prepmate/sessionId" element={<PrepMate/>} /> 
+          <Route path="/prepmate/:sessionId" element={<PrepMate/>} /> 
         </Routes>
       </Router>
 
