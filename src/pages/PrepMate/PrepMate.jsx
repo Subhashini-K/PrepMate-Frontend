@@ -87,7 +87,44 @@ const PrepMate = () => {
 
   // Add more questions to a session
   const uploadMoreQuestions = async () => {
-    // implementation
+    try{
+    setIsUpdateLoader(true);
+
+    // Call AI API to generate questions
+    const aiResponse = await axiosInstance.post(
+      API_PATHS.AI.GENERATE_QUESTIONS,
+      {
+        role: sessionData?.role,
+        experience: sessionData?.experience,
+        topicsToFocus: sessionData?.topicsToFocus,
+        numberOfQuestions: 10,
+      }
+    );
+
+    // Should be array like [{question, answer}, ...]
+    const generatedQuestions = aiResponse.data;
+
+    const response = await axiosInstance.post(
+      API_PATHS.QUESTION.ADD_TO_SESSION,
+      {
+        sessionId,
+        questions: generatedQuestions,
+      }
+    );
+
+    if(response.data){
+      toast.success("Added more Q&A!!!");
+      fetchSessionDetailsById();
+    }
+  } catch (error){
+    if(error.response && error.response.data.message) {
+      setErrorMsg(error.response.data.message);
+    }else{
+      setErrorMsg("Something went wrong. Please try again.");
+    }
+  } finally{
+    setIsUpdateLoader(false);
+  }
   };
 
   // useEffect to fetch session details on mount
@@ -141,17 +178,15 @@ const PrepMate = () => {
                     layout // enables layout animation
                     layoutId={`question-${data._id || index}`} //Helps framer track specific items
                   >
-                    
-                      <QuestionCard
-                        question={data?.question}
-                        answer={data?.answer}
-                        onLearnMore={() =>
-                          generateConceptExplanation(data.question)
-                        }
-                        isPinned={data?.isPinned}
-                        onTogglePin={() => toggleQuestionPinStatus(data._id)}
-                      />
-                    
+                    <QuestionCard
+                      question={data?.question}
+                      answer={data?.answer}
+                      onLearnMore={() =>
+                        generateConceptExplanation(data.question)
+                      }
+                      isPinned={data?.isPinned}
+                      onTogglePin={() => toggleQuestionPinStatus(data._id)}
+                    />
 
                     {!isLoading &&
                       sessionData?.questions?.length == index + 1 && (
