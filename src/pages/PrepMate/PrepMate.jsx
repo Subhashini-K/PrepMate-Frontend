@@ -5,11 +5,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { LuCircleAlert, LuListCollapse } from 'react-icons/lu';
 import SpinnerLoader from "../../components/Loader/SpinnerLoader";
 import { toast } from "react-hot-toast";
-import RoleInfoHeader from '../../components/RoleInfoHeader';
+import RoleInfoHeader from './components/RoleInfoHeader';
 import DashboardLayout from '../../components/Layouts/DashboardLayout';
 import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPaths';
 import QuestionCard from '../../components/Cards/QuestionCard';
+import Drawer from '../../components/Drawer';
+
 
 const PrepMate = () => {
   const { sessionId } = useParams();
@@ -38,13 +40,53 @@ const PrepMate = () => {
 
   // Generate Concept Explanation
   const generateConceptExplanation = async (questionId) => {
-    // implementation
-  };
+  try {
+    setErrorMsg("");
+    setExplanation(null);
+
+    setIsLoading(true);
+    setOpenLeanMoreDrawer(true);
+
+    const response = await axiosInstance.post(
+      API_PATHS.AI.GENERATE_EXPLANATION,
+      {
+        question,
+      }
+    );
+
+    if (response.data) {
+      setExplanation(response.data);
+    }
+  } 
+  catch(error){
+    setExplanation(null)
+    setErrorMsg("Failed to generate explanation, Try again later");
+    console.error("Error:",error);
+  } finally{
+    setIsLoading(false);
+  }
+};
+
+  
 
   // Pin Question
   const toggleQuestionPinStatus = async (questionId) => {
-    // implementation
-  };
+  try {
+    const response = await axiosInstance.post(
+      API_PATHS.QUESTION.PIN(questionId)
+    );
+
+    console.log(response);
+
+    if (response.data && response.data.question) {
+      // toast.success('Question Pinned Successfully')
+      fetchSessionDetailsById();
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 
   // Add more questions to a session
   const uploadMoreQuestions = async () => {
@@ -116,6 +158,26 @@ return (
       })}
     </AnimatePresence>
   </div>
+</div>
+
+<div>
+  <Drawer
+  isOpen={openLearnMoreDrawer}
+  onClose={() => setOpenLearnMoreDrawer(false)}
+  title={!isLoading && explanation?.title}
+>
+  {errorMsg && (
+    <p className="flex gap-2 text-sm text-purple-600 font-medium">
+      <LuCircleAlert className="mt-1" /> {errorMsg}
+    </p>
+  )}
+  {isLoading && <SkeletonLoader />}
+
+  {!isLoading && explanation && (
+    <AIResponsePreview content={explanation?.explanation} />
+  )}
+</Drawer>
+
 </div>
 </div>
 </DashboardLayout>
