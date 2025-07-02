@@ -9,6 +9,7 @@ import Login from './Auth/Login';
 import Modal from '../components/Modal';
 import { UserContext } from '../context/userContext';
 import ProfileInfoCard from '../components/Cards/ProfileInfoCard';
+import logo from "../assets/logo.png";
 
 const LandingPage = () => {
   const {user} = useContext(UserContext);
@@ -35,9 +36,10 @@ const LandingPage = () => {
       <div className='container mx-auto px-4 pt-6 pb-[200px] relative z-10'>
         {/* Header */}
          <header className='flex justify-between items-center mb-16'>
-          <div className='text-5xl text-[#4B164C] font-bold'>
-            PrepMate
+          <div className='text-3xl text-[#4B164C] font-bold'>
+            <img src={logo} alt="logo" className='h-[70px]'/>
           </div>
+          
           {user ? (
             <ProfileInfoCard />
           ) : (
@@ -95,7 +97,9 @@ const LandingPage = () => {
           <div className='container mx-auto px-4 pt-10 pb-20'>
             <section className='mt-5'>
               <h2 className='text-3xl font-medium text-center mb-12'>
+                <span className='text-transparent bg-clip-text bg-[radial-gradient(circle,_#4B164C_1%,_#D69ADE_100%)] bg-[length:200%_200%] animate-text-shine font-semibold'> 
                 Features That Make You Shine
+               </span> 
               </h2>
 
               <div className='flex flex-col items-center gap-8'>
@@ -104,9 +108,9 @@ const LandingPage = () => {
                   {APP_FEATURES.slice(0,3).map((feature) => (
                     <div 
                       key={feature.id}
-                      className='bg-[#FFFEF8] p-6 rounded-xl shadow-xs hover:shadow-lg shadow-[#7F55B1]-100 transition border border-amber-100'
+                      className='bg-[#FFFEF8] p-6 rounded-xl shadow-xs hover:shadow-lg shadow-amber-100 transition border border-amber-100'
                       >
-                     <h3 className='text-[#4B164C] font-bold mb-3'>
+                     <h3 className='text-[#AA60C8] font-bold mb-3'>
                       {feature.title}
                      </h3>
                      <p className='text-gray=600'>
@@ -123,7 +127,7 @@ const LandingPage = () => {
                    key={feature.id}
                    className='bg-[#FFFEF8] p-6 rounded-xl shadow-xs hover:shadow-lg shadow-amber-100 transition border border-amber-100'
                    >
-                    <h3 className='text-base font-semibold mb-3'>
+                    <h3 className='text-[#AA60C8] font-semibold mb-3'>
                       {feature.title}
                     </h3>
                     <p className='text-gray=600'>
