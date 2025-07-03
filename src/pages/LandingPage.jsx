@@ -37,7 +37,7 @@ const LandingPage = () => {
 
           <div className="container mx-auto pt-6 pb-[100px] relative z-10">
             {/* Header */}
-            <header className="flex justify-between items-center mb-16 border-b border-gray-400">
+            <header className="flex justify-between items-center mb-16 border-b border-gray-400 pb-[20px]">
               <div className="text-3xl text-[#4B164C] font-bold pl-[30px]">
                 <img src={logo} alt="logo" className="h-[70px]" />
               </div>
@@ -97,7 +97,7 @@ const LandingPage = () => {
               <img
                 src={HERO_IMG}
                 alt="Hero Image"
-                className="w-[85vw] rounded-lg"
+                className="w-[85vw] rounded-lg custom-pulse"
               />
             </section>
           </div>

@@ -93,3 +93,16 @@
 .btn-small{
     @apply flex items-center justify-center gap-3 bg-linear-to-r from-[#4B164C] to-[#7F55B1] text-sm font-semibold text-white px-7 py-2 rounded-lg hover:bg-black hover:text-white transition-colors cursor-pointer hover:shadow-2xl hover:shadow-purple-300
 }
+
+@keyframes customPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.custom-pulse {
+  animation: customPulse 2s ease-in-out infinite;
+}
